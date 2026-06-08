@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>161 Things Every Cornellian Should Do</title>
+<script src="<https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js>"></script>
+<script src="<https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js>"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: #1a0a00;
+  color: #f5f0e8;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.screen {
+  position: fixed; inset: 0;
+  background: #1a0a00;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 30px 24px;
+  z-index: 100; overflow-y: auto;
+}
+.screen.hidden { display: none !important; }
+.screen-logo { font-size: 2.4rem; margin-bottom: 14px; opacity: 0.7; }
+.screen h1 {
+  font-size: clamp(1.1rem, 5vw, 1.7rem);
+  color: #e8c06a; text-align: center;
+  margin-bottom: 6px; letter-spacing: 0.04em;
+  text-transform: uppercase; line-height: 1.3;
+}
+.screen h2 {
+  font-size: 1.3rem; color: #e8c06a;
+  margin-bottom: 6px; text-align: center;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.screen-sub {
+  font-size: 0.75rem; color: #a08060;
+  font-style: italic; text-align: center;
+  margin-bottom: 28px;
+}
+.screen-buttons {
+  display: flex; flex-direction: column;
+  gap: 12px; width: 100%; max-width: 320px; margin-bottom: 20px;
+}
+.btn-mode {
+  padding: 15px 24px; font-size: 0.95rem;
+  font-family: Georgia, serif; border-radius: 12px;
+  border: 2px solid #6a3010; background: #2a1005;
+  color: #f5f0e8; cursor: pointer; letter-spacing: 0.05em;
+  transition: background 0.2s, border-color 0.2s; text-align: left;
+}
+.btn-mode:hover { background: #3a1808; }
+.btn-mode:active { transform: scale(0.97); }
+.btn-mode.btn-host { border-color: #3a6020; color: #8adf50; }
+.btn-mode.btn-host:hover { background: #1a2a10; }
+.btn-mode.btn-join { border-color: #3a3080; color: #a0a0ff; }
+.btn-mode.btn-join:hover { background: #1a1a30; }
+.btn-small-link {
+  background: none; border: none; color: #605040;
+  font-size: 0.8rem; cursor: pointer; padding: 8px;
+  font-family: Georgia, serif;
+}
+.btn-small-link:hover { color: #e8c06a; }
+.btn-back {
+  background: none; border: none; color: #806050;
+  font-size: 0.85rem; cursor: pointer; padding: 10px;
+  font-family: Georgia, serif; margin-top: 4px;
+}
+.btn-back:hover { color: #e8c06a; }
+.btn-primary {
+  padding: 14px 24px; font-size: 0.95rem;
+  font-family: Georgia, serif; border-radius: 12px;
+  border: 2px solid #b31b1b; background: #7a0a0a;
+  color: #fff; cursor: pointer; letter-spacing: 0.05em;
+  width: 100%; max-width: 320px; margin-bottom: 8px;
+}
+.btn-primary:hover { background: #9a1010; }
+.btn-primary:active { transform: scale(0.97); }
+.input-group {
+  display: flex; flex-direction: column; gap: 6px;
+  width: 100%; max-width: 360px; margin-bottom: 14px;
+}
+.input-group label {
+  font-size: 0.7rem; color: #a08060;
+  text-transform: uppercase; letter-spacing: 0.07em;
+}
+.input-group input,
+.input-group textarea,
+.input-group select {
+  background: #2a1005; color: #f5f0e8;
+  border: 1px solid #5a2010; border-radius: 8px;
+  padding: 10px 12px; font-size: 0.9rem;
+  font-family: Georgia, serif; outline: none; resize: vertical;
+}
+.input-group input:focus,
+.input-group textarea:focus { border-color: #b31b1b; }
+.input-group select option { background: #2a1005; }
+.form-hint {
+  font-size: 0.68rem; color: #7a5040;
+  font-style: italic; line-height: 1.4;
+}
+a.form-hint-link { color: #a08060; }
+
+#game-view {
+  width: 100%; max-width: 580px;
+  display: flex; flex-direction: column;
+  align-items: center; padding: 14px 18px 30px;
+}
+#game-view.hidden { display: none !important; }
+.game-header {
+  width: 100%; display: flex;
+  justify-content: space-between; align-items: center;
+  margin-bottom: 12px;
+}
+.header-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.mode-badge {
+  font-size: 0.62rem; font-weight: bold;
+  letter-spacing: 0.12em; padding: 3px 9px;
+  border-radius: 6px; text-transform: uppercase;
+}
+.mode-solo { background: #3a2010; color: #a08060; }
+.mode-host { background: #1a3010; color: #6adf50; border: 1px solid #3a6020; }
+.mode-join { background: #1a1a30; color: #a0a0ff; border: 1px solid #3a3080; }
+.room-code-badge {
+  font-size: 0.82rem; font-weight: bold;
+  letter-spacing: 0.2em; color: #e8c06a;
+  background: #2a1500; padding: 3px 10px;
+  border-radius: 6px; cursor: pointer;
+  border: 1px solid #5a3010;
+  user-select: all; position: relative;
+}
+.room-code-badge:hover { border-color: #e8c06a; }
+.share-hint { font-size: 0.65rem; color: #7a5030; font-style: italic; }
+.btn-icon {
+  background: none; border: none; color: #605040;
+  font-size: 1rem; cursor: pointer; padding: 4px 8px;
+  border-radius: 6px;
+}
+.btn-icon:hover { color: #f5f0e8; background: #3a1505; }
+
+.progress-wrap { width: 100%; margin-bottom: 14px; }
+.progress-label {
+  display: flex; justify-content: space-between;
+  font-size: 0.72rem; color: #a08060; margin-bottom: 5px;
+}
+.yes-count { color: #6adf40; }
+.no-count  { color: #df6040; }
+.progress-bar-bg {
+  background: #3a1a00; border-radius: 99px;
+  height: 8px; overflow: hidden; display: flex;
+}
+.progress-bar-yes {
+  background: linear-gradient(90deg, #3a8020, #6adf40);
+  height: 100%; transition: width 0.4s ease;
+}
+.progress-bar-no {
+  background: linear-gradient(90deg, #802020, #df6040);
+  height: 100%; transition: width 0.4s ease;
+}
+
+.card {
+  background: #2a100a; border: 2px solid #5a2010;
+  border-radius: 16px; width: 100%;
+  padding: 32px 28px 24px; text-align: center;
+  position: relative; min-height: 200px;
+  display: flex; flex-direction: column; justify-content: center;
+  transition: border-color 0.3s, background 0.3s;
+}
+.card.answered-yes { background: #1a2a10; border-color: #3a7020; }
+.card.answered-no  { background: #2a1010; border-color: #7a2010; }
+.item-number {
+  font-size: 0.72rem; color: #a08060;
+  letter-spacing: 0.1em; margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.item-text {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  line-height: 1.55; color: #f5f0e8;
+}
+.card.answered-yes .item-text { color: #c8e8a0; }
+.card.answered-no  .item-text { color: #e8b0a0; }
+.answer-badge {
+  position: absolute; top: 14px; right: 16px;
+  font-size: 1.2rem; opacity: 0; transition: opacity 0.3s;
+}
+.card.answered-yes .answer-badge,
+.card.answered-no  .answer-badge { opacity: 1; }
+
+.controls {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 16px; flex-wrap: wrap; justify-content: center;
+  width: 100%;
+}
+.btn-nav {
+  background: #3a1505; color: #f5f0e8; font-size: 1.2rem;
+  width: 48px; height: 48px; border: 1px solid #6a3010;
+  border-radius: 10px; cursor: pointer; transition: background 0.2s;
+}
+.btn-nav:hover:not(:disabled) { background: #5a2510; }
+.btn-nav:disabled { opacity: 0.25; cursor: default; }
+.btn-play {
+  background: #b31b1b; color: #fff; font-size: 1rem;
+  width: 54px; height: 54px; border-radius: 50%; border: none;
+  cursor: pointer; box-shadow: 0 0 14px rgba(179,27,27,0.4);
+  flex-shrink: 0; transition: background 0.2s;
+}
+.btn-play:hover { background: #d42020; }
+.btn-play.speaking { background: #6a1010; box-shadow: 0 0 18px rgba(179,27,27,0.7); }
+.btn-random {
+  background: #2a1a40; color: #c8b0ff; font-size: 1rem;
+  width: 48px; height: 48px; border: 1px solid #5a3080;
+  border-radius: 10px; cursor: pointer; transition: background 0.2s;
+}
+.btn-random:hover:not(:disabled) { background: #3a2050; }
+.btn-random:disabled { opacity: 0.25; cursor: default; }
+
+.yn-row { display: flex; gap: 12px; margin-top: 14px; width: 100%; }
+.btn-yes {
+  flex: 1; padding: 13px 0; font-size: 0.95rem; font-weight: bold;
+  background: #1a3010; color: #6adf40; border: 2px solid #3a6020;
+  border-radius: 12px; cursor: pointer; letter-spacing: 0.04em; font-family: Georgia, serif;
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-yes:hover { background: #254015; border-color: #6adf40; }
+.btn-yes.active { background: #2a5018; border-color: #6adf40; box-shadow: 0 0 10px rgba(106,223,64,0.3); color: #a0ff70; }
+.btn-no {
+  flex: 1; padding: 13px 0; font-size: 0.95rem; font-weight: bold;
+  background: #301010; color: #df6040; border: 2px solid #602020;
+  border-radius: 12px; cursor: pointer; letter-spacing: 0.04em; font-family: Georgia, serif;
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-no:hover { background: #401818; border-color: #df6040; }
+.btn-no.active { background: #501818; border-color: #df6040; box-shadow: 0 0 10px rgba(223,96,64,0.3); color: #ff9070; }
+
+.settings-row {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 10px; font-size: 0.72rem; color: #806050;
+  flex-wrap: wrap; justify-content: center;
+}
+.settings-row input[type=range] { accent-color: #b31b1b; width: 90px; }
+#tts-status { font-size: 0.67rem; color: #7a5040; font-style: italic; }
+
+.scoreboard {
+  width: 100%; margin-top: 18px;
+  background: #150800; border: 1px solid #3a1505;
+  border-radius: 12px; padding: 14px 16px;
+}
+.sb-title {
+  font-size: 0.68rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: #806050;
+  margin-bottom: 10px; font-weight: bold;
+}
+.score-q-summary { font-size: 0.78rem; color: #c0a080; margin-bottom: 6px; }
+.score-bar-bg {
+  height: 6px; background: #3a1a00;
+  border-radius: 99px; overflow: hidden; margin-bottom: 12px;
+}
+.score-bar-yes {
+  height: 100%; background: linear-gradient(90deg, #3a8020, #6adf40);
+  border-radius: 99px; transition: width 0.4s;
+}
+.sb-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 5px 0; border-bottom: 1px solid #220d00; font-size: 0.78rem;
+}
+.sb-row:last-child { border-bottom: none; }
+.sb-name { color: #c0a080; }
+.sb-yes { color: #6adf40; font-weight: bold; }
+.sb-no  { color: #df6040; font-weight: bold; }
+.sb-pending { color: #4a3020; }
+.sb-overall-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 4px 0; font-size: 0.74rem; border-bottom: 1px solid #220d00;
+}
+.sb-overall-row:last-child { border-bottom: none; }
+.sb-rank { color: #e8c06a; min-width: 20px; }
+
+.bottom-row {
+  display: flex; gap: 10px; margin-top: 12px;
+  justify-content: center; flex-wrap: wrap; width: 100%;
+}
+.btn-reset {
+  background: #201015; color: #806060; font-size: 0.78rem;
+  padding: 8px 18px; border: 1px solid #402020;
+  border-radius: 8px; cursor: pointer; font-family: Georgia, serif;
+}
+.btn-reset:hover { background: #301520; color: #ff9090; }
+
+details { width: 100%; margin-top: 16px; }
+summary {
+  cursor: pointer; font-size: 0.72rem; color: #806050;
+  text-align: center; padding: 6px; letter-spacing: 0.08em;
+  text-transform: uppercase; list-style: none;
+}
+summary:hover { color: #e8c06a; }
+.index-list {
+  margin-top: 8px; max-height: 280px; overflow-y: auto;
+  background: #150800; border-radius: 10px;
+  border: 1px solid #3a1505; padding: 8px 0;
+}
+.index-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 6px 14px; cursor: pointer; font-size: 0.76rem;
+  line-height: 1.4; border-left: 3px solid transparent;
+  transition: background 0.12s;
+}
+.index-item:hover { background: #2a1005; }
+.index-item.active { border-left-color: #b31b1b; background: #200a00; }
+.index-item.ans-yes { color: #6a9040; }
+.index-item.ans-no  { color: #9a5040; }
+.idx-num { color: #605040; min-width: 26px; text-align: right; flex-shrink: 0; }
+.idx-badge { flex-shrink: 0; font-size: 0.82rem; min-width: 16px; }
+
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: #3a2010; border: 1px solid #7a4020; color: #e8c06a;
+  padding: 8px 18px; border-radius: 99px; font-size: 0.78rem;
+  z-index: 999; opacity: 0; transition: opacity 0.3s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; }
+
+footer { margin-top: 22px; font-size: 0.63rem; color: #4a3020; text-align: center; }
+
+details[data-sb] summary {
+  font-size: 0.7rem; color: #605040; text-align: left;
+  margin-top: 10px; padding: 4px 0;
+}
+</style>
+</head>
+<body>
+
+<div id="screen-landing" class="screen">
+  <div class="screen-logo">🏛</div>
+  <h1>161 Things Every<br>Cornellian Should Do</h1>
+  <p class="screen-sub">The Cornell Daily Sun · April 2025</p>
+  <div class="screen-buttons">
+    <button class="btn-mode" onclick="startSolo()">▶&nbsp;&nbsp;Play Solo</button>
+    <button class="btn-mode btn-host" onclick="showHostSetup()">⬡&nbsp;&nbsp;Host a Game</button>
+    <button class="btn-mode btn-join" onclick="showJoinSetup()">→&nbsp;&nbsp;Join a Game</button>
+  </div>
+  <button class="btn-small-link" onclick="showSettings(false)">⚙ Settings</button>
+</div>
+
+<div id="screen-host-setup" class="screen hidden">
+  <h2>Host a Game</h2>
+  <p class="screen-sub">You control the questions. Others follow along.</p>
+  <div class="input-group">
+    <label>Your name</label>
+    <input id="host-name-input" type="text" placeholder="e.g. Mark" maxlength="20" autocomplete="nickname">
+  </div>
+  <button class="btn-primary" onclick="startHost()">Create Room</button>
+  <button class="btn-back" onclick="showScreen('landing')">← Back</button>
+</div>
+
+<div id="screen-join-setup" class="screen hidden">
+  <h2>Join a Game</h2>
+  <p class="screen-sub">Enter the room code from the host's screen.</p>
+  <div class="input-group">
+    <label>Room code</label>
+    <input id="join-code-input" type="text" placeholder="e.g. ABCD5" maxlength="6"
+      autocapitalize="characters" autocomplete="off"
+      oninput="this.value=this.value.toUpperCase()"
+      style="font-size:1.3rem;letter-spacing:0.2em;text-transform:uppercase">
+  </div>
+  <div class="input-group">
+    <label>Your name</label>
+    <input id="join-name-input" type="text" placeholder="e.g. Sarah" maxlength="20" autocomplete="nickname">
+  </div>
+  <button class="btn-primary" onclick="startJoin()">Join</button>
+  <button class="btn-back" onclick="showScreen('landing')">← Back</button>
+</div>
+
+<div id="screen-settings" class="screen hidden">
+  <h2>Settings</h2>
+  <p class="screen-sub">Saving downloads a new copy of the file with your config baked in.</p>
+  <div class="input-group">
+    <label>Firebase Config JSON</label>
+    <textarea id="firebase-config-input" rows="5"
+      placeholder='{"apiKey":"…","authDomain":"…","databaseURL":"…","projectId":"…","appId":"…"}'></textarea>
+  </div>
+  <div class="input-group">
+    <label>ElevenLabs API Key (natural TTS)</label>
+    <input id="el-key-input" type="password" placeholder="sk_…" autocomplete="off">
+  </div>
+  <div class="input-group">
+    <label>ElevenLabs Voice</label>
+    <select id="el-voice-select">
+      <option value="21m00Tcm4TlvDq8ikWAM">Rachel — warm female</option>
+      <option value="pNInz6obpgDQGcFmaJgB">Adam — deep male</option>
+      <option value="TxGEqnHWrfWFTfGW9XjX">Josh — casual male</option>
+      <option value="EXAVITQu4vr4xnSDxMaL">Bella — soft female</option>
+      <option value="onwK4e9ZLuTAKqWW03F9">Daniel — British male</option>
+      <option value="XB0fDUnXU5powFXDhCwa">Charlotte — British female</option>
+      <option value="IKne3meq5aSn9XLyUdCD">Charlie — Australian male</option>
+      <option value="Xb7hH8MSUJpSbSDYk0k2">Alice — British female</option>
+    </select>
+  </div>
+  <button class="btn-primary" onclick="saveSettings()">Save</button>
+  <button class="btn-back" onclick="closeSettings()">← Back</button>
+</div>
+
+<div id="game-view" class="hidden">
+  <div class="game-header">
+    <div class="header-left">
+      <span id="mode-badge" class="mode-badge mode-solo">SOLO</span>
+      <span id="room-code-badge" class="room-code-badge" style="display:none"
+        onclick="copyRoomCode()" title="Tap to copy"></span>
+      <span id="share-hint" class="share-hint" style="display:none"></span>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <button class="btn-icon" onclick="showSettings(true)" title="Settings">⚙</button>
+      <button class="btn-icon" onclick="leaveGame()" title="Leave">✕</button>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span id="prog-text">0 of 161 answered</span>
+      <span><span class="yes-count" id="yes-count">0 yes</span>&nbsp;&nbsp;<span class="no-count" id="no-count">0 no</span></span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-yes" id="prog-yes" style="width:0%"></div>
+      <div class="progress-bar-no"  id="prog-no"  style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="card" id="card">
+    <div class="answer-badge" id="answer-badge"></div>
+    <div class="item-number"  id="item-num">Item 1 of 161</div>
+    <div class="item-text"    id="item-text"></div>
+  </div>
+
+  <div class="controls">
+    <button class="btn-nav"    id="btn-prev"   onclick="navigate(-1)">←</button>
+    <button class="btn-play"   id="btn-play"   onclick="toggleSpeak()">▶</button>
+    <button class="btn-nav"    id="btn-next"   onclick="navigate(1)">→</button>
+    <button class="btn-random" id="btn-random" onclick="goRandom()">⁂</button>
+  </div>
+
+  <div class="yn-row">
+    <button class="btn-yes" id="btn-yes" onclick="setAnswer('yes')">✓&nbsp; Yes, done this</button>
+    <button class="btn-no"  id="btn-no"  onclick="setAnswer('no')">✗&nbsp; Not yet</button>
+  </div>
+
+  <div class="settings-row" id="tts-row">
+    <span>Speed:</span>
+    <input type="range" id="speed" min="0.6" max="1.6" step="0.1" value="0.9">
+    <span id="speed-label">0.9×</span>
+    <span id="tts-status"></span>
+  </div>
+
+  <div id="scoreboard" class="scoreboard" style="display:none">
+    <div class="sb-title">📊 Live Scoreboard</div>
+    <div id="score-summary"></div>
+    <div id="score-players"></div>
+    <details data-sb>
+      <summary>Overall leaderboard</summary>
+      <div id="score-overall" style="margin-top:6px"></div>
+    </details>
+  </div>
+
+  <div id="reset-row" class="bottom-row">
+    <button class="btn-reset" onclick="resetAll()">Reset All Answers</button>
+  </div>
+
+  <details>
+    <summary>☰ Browse all 161</summary>
+    <div class="index-list" id="index-list"></div>
+  </details>
+
+  <footer>The Cornell Daily Sun &bull; Answers saved locally</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const ITEMS = [
+  "Make the library into your bedroom and have sex in the stacks",
+  "Go to the Cornell-Harvard men's hockey game and throw fish on the ice",
+  "Go to Zeus after class. Sit on a bench because all the tables are being used for coffee chats",
+  "Take off to NYC for Fall Break, being sure to post on Instagram about it at least twice",
+  "Sled down Libe Slope during a snowstorm",
+  "Take Hotel Administration 4300: Introduction to Wines",
+  "Take AMST 2001 and learn some Cornell history from Corey Earle '07",
+  "Streak across the Arts Quad",
+  "Go sake bombing at Plum Tree",
+  "Order ice cream at the Dairy Bar",
+  "Climb the rock wall in Bartels Hall",
+  "Listen to a full chimes concert from the clock tower and guess the songs played",
+  "Order the same thing off the Collegetown Bagels menu all four years",
+  "Register for classes during Freshman Pre-Enroll, then switch out of every single one by the time Add/Drop ends",
+  "Dress for 70 degree weather. Cry as you walk home in the freezing cold that night",
+  "Steal a vegetable from the Cornell Botanic Gardens. Savor it",
+  "Go to the Fuertes Observatory on North Campus and see Saturn through the telescope",
+  "Enroll in BIOEE 1540: Introductory Oceanography as a joke, then fall in love with Bruce Monger and attend every class",
+  "Have a snowball fight in May",
+  "Stick your hand inside a fistulated cow",
+  "Skip class to play SpikeBall on the Arts Quad",
+  "Bury a bottle of Barton's on the Slope. Dig it up on Slope Day.",
+  "Enjoy golden hour from the Cornell Botanic Gardens",
+  "Attend the Apple Festival on the Commons",
+  "Flirt with your professor",
+  "Bomb a prelim",
+  "Ace the next one to save your grade",
+  "Steal a bunch of cups from the dining hall and never give them back",
+  "Attend Hotelie prom",
+  "Take a selfie with Happy Dave from Okenshield's",
+  "Take three finals in two days because they were just over 24 hours apart",
+  "Get heartburn at the Chili Cook-off on the Commons",
+  "Enjoy Ithaca's two months of warm weather — spend a summer here!",
+  "Go to a Shabbat dinner at 104West!",
+  "Watch the AAP students parade down East Avenue on Dragon Day",
+  "Walk out of class to warm weather and immediately get a beer at CTB",
+  "Build a snow penis or count how many you see around campus",
+  "Dress up and view The Rocky Horror Picture Show at Risley",
+  "Take a class you think is impossible just for fun",
+  "Go to Catharine Valley for a wine tour",
+  "Kiss on the suspension bridge at midnight",
+  "Take Plant Pathology 2010: Magical Mushrooms, Mischievous Molds",
+  "Shop at the Friends of the Library Book Sale",
+  "Get a University parking ticket, then sweet-talk your way out of it",
+  "Buy an Ithaca Is Gorges t-shirt, then get sick of wearing it and buy a dumb variation (Ithaca Is Gangsta, Vaginas Are Gorges, Ithaca Is Long Island…)",
+  "Learn the \"Alma Mater,\" \"Evening Song\" and \"Give My Regards to Davy.\" Hum them when you hear the chimes",
+  "Attend an opening at the Herbert F. Johnson Museum of Art",
+  "Smuggle food from the dining hall and run for your life as they try to get back your stolen cookies",
+  "Make the Walk of Shame. See an ex on your way home",
+  "Have dinner at a professor's house",
+  "Get wasted at a professor's house",
+  "Take a selfie with a Cornell president",
+  "Play a game of tag in the Kroch Library stacks",
+  "Take a class that meets outside",
+  "Start your freshman year pre-med. Graduate from Dyson.",
+  "Kayak or canoe on Beebe Lake",
+  "Watch dancers fly through the air at a Pao Bhangra show",
+  "Have a midnight picnic in the Ag Quad",
+  "Wait in line for half an hour for an orange chicken burrito at Terrace",
+  "Ignore the \"No Winter Maintenance\" signs … slip and fall down the stairs",
+  "Sit in Libe Café when you have no work to do and watch worried students down gallons of coffee",
+  "Write an angry letter to the editor of The Sun",
+  "Get swarmed by freshmen as they migrate back to north",
+  "Explore the secret underground tunnel between Uris and Olin libraries",
+  "Request an item from the library's Rare and Manuscript Collection",
+  "Pretend you are Harry Potter and study in the A.D. White Reading Room",
+  "See the brain collection in Uris Hall",
+  "Use all your CityBucks at 7-11 on Keystone and Twisted Tea Light",
+  "Submit a guest column for Sex on Thursday about your raunchy sexcapades",
+  "Eat your way through the Farmer's Market",
+  "Sleep through your alarm for a 1:25 p.m. class",
+  "Take part in a psychology experiment and get a measly number of SONA credits",
+  "See Ezra Cornell's body in the crypt",
+  "Occupy Willard Straight or storm Day Hall",
+  "Watch as a virgin crosses the Arts Quad at midnight and A.D. White and Ezra Cornell walk towards each other to shake hands on Halloween",
+  "Live through an Ithaca blizzard and tell your friends you survived frostbite",
+  "Throw a flaming pumpkin into the gorge",
+  "Join an intramural sports team. Take it too seriously and get matching uniforms.",
+  "Spend all your lectures figuring out the Wordle and Connections. While sitting for the final, wish you had taken notes instead",
+  "Go ice skating at Lynah Rink",
+  "Request a song to be played on the clock tower",
+  "Watch the ginger run",
+  "Walk to class in the snow, uphill both ways",
+  "Hook up with someone in your dorm and then see them every day afterward",
+  "Write dirty messages with rocks in the gorge",
+  "Eat a chicken parm sandwich from Louie's Lunch",
+  "Walk the runway as a model in the Cornell Fashion Collective's annual fashion show",
+  "Sleep through pre-enroll and change your major as a result",
+  "Gain the freshman 15. Pay $145 for a gym membership and don't go.",
+  "Play trivia at Collegetown Bagels on Tuesday nights",
+  "Go bowling at Helen Newman Lanes",
+  "Get a ticket for peeing on the Law School",
+  "Have a friend's parents take you out to eat at Thompson and Bleeker or Simeon's",
+  "See a concert at Barton Hall",
+  "Order off the secret menu at Louie's Lunch",
+  "Cheer on your friends as they perform at the Schwartz Center",
+  "Pick next year's ice cream flavor",
+  "Nap in every library on campus",
+  "Get too drunk before homecoming. Miss the game",
+  "Take a midnight nap in Uris Library Cocktail Lounge and wake up 3 days later",
+  "See Yamatai bang it out at Clubfest",
+  "Visit Ithaca Mall, realize it is severely lacking, then drive to Destiny USA Mall in Syracuse",
+  "Take a night prelim near the vet school, walk back in the dark",
+  "Get thrown out of Balch Hall",
+  "Attend a show at the State Theatre or Hangar Theatre",
+  "Go to an a cappella concert",
+  "Walk to a fraternity party with your entire freshman floor. Get turned away",
+  "Put on a swimsuit and jump into the cold water at Second Dam",
+  "Take part in Holi and get colorful",
+  "Eat at each dining hall at least once",
+  "Try to order pizza from a Blue Light phone",
+  "Have a traumatic OurBus experience. Never return",
+  "See a film at Cornell Cinema",
+  "Ride a horse at Oxley Equestrian Center",
+  "Take the BASICS program. Do it with a beer in hand",
+  "See how long you can go without doing laundry",
+  "Get lost during O-week as a freshman, and end up in the Commons",
+  "Have the Hideaway bartender take a picture of you because your fake doesn't scan",
+  "Check out a charger from Olin. Don't give it back",
+  "Lose a friend over signing a lease in Collegetown",
+  "Walk holding hands around Beebe Lake",
+  "Buy a Cornell-grown apple from a vending machine",
+  "Get tapped for a secret society",
+  "Go skinny dipping in a gorge",
+  "Get more downvotes than upvotes on Sidechat",
+  "Host a prefrosh",
+  "Drive your car up and down Libe Slope",
+  "Make a chalking. Weep when it rains that night",
+  "Attend a Sun meeting",
+  "Take photobooth pics at Hideaway and post them on your Instagram story",
+  "Eat hungover brunch at Morrison or Appel",
+  "Turn down a flyer at Ho Plaza and say \"I already got one\"",
+  "Rush a fraternity/sorority or mosey a co-op during your freshman spring",
+  "Meet Bill Nye '77, \"The Science Guy,\" and give him a hug",
+  "Ski at Greek Peak",
+  "Crash a political rally on Ho Plaza",
+  "Get on the wrong TCAT and end up at Ithaca College",
+  "Watch women's hockey dominate any team who steps on the ice",
+  "See how many people you can cram into your dorm room",
+  "Order Wings Over after 2 a.m.",
+  "Make the trek down the hill: go to a townie bar",
+  "Tell a professor what you really think of his/her class",
+  "Drink with your R.A.",
+  "Go to the sex shop, called the \"Adult Outlet,\" on the Commons. Gawk",
+  "Run out of BRBs in March. Live off campus events' free food for the rest of the year",
+  "Heckle your tour guide friend as they're leading a group of prospective students around campus",
+  "Get asked if you are pregnant at Cornell Health",
+  "Experience a UAW strike",
+  "Go to ClubFest as a first-year and sign up for a dozen clubs that you'll never go to",
+  "Complain about the Slope Day headliners",
+  "Hit up Fishbowl Wednesdays at Level B",
+  "Ask for an extension on a term paper",
+  "Accidentally rip a poster at the poster sale. Tell no one",
+  "Play mini golf at the Sciencenter",
+  "Hook up with your hot T.A.",
+  "Go swimming at Treman State Park, Buttermilk Falls or Second Dam",
+  "Furnish an apartment entirely with items from Ithaca Reuse and the Dump & Run",
+  "Walk to a fraternity party as a senior; convince yourself you were never one of them",
+  "Fail your swim test, just for kicks",
+  "Eat a Pinesburger, then watch water flow over Taughannock Falls, the highest single-drop waterfall east of the Rockies.",
+  "Climb all 161 steps to the top of McGraw Tower"
+];
+
+const BAKED_FB_CONFIG = {"apiKey":"AIzaSyB6Z85th8tcoJKZKKWpLhihIURl6Pl0M_w","authDomain":"<cornell-161-things.firebaseapp.com>","databaseURL":"<https://cornell-161-things-default-rtdb.firebaseio.com>","projectId":"cornell-161-things","storageBucket":"cornell-161-things.firebasestorage.app","messagingSenderId":"849154233670","appId":"1:849154233670:web:3c6a5de31c7ecda5680147"};
+const BAKED_EL_KEY    = 'sk_da10040db681bdb44dc412b9de8a626d12eb96ba6aecec0f';
+const BAKED_EL_VOICE  = '';
+
+const SOLO_KEY      = 'cornell161_solo_v3';
+const PLAYER_ID_KEY = 'cornell161_pid';
+const NAME_KEY      = 'cornell161_name';
+const FB_CFG_KEY    = 'cornell161_fbCfg';
+const EL_KEY_KEY    = 'cornell161_elKey';
+const EL_VOICE_KEY  = 'cornell161_elVoice';
+
+let mode        = 'solo';
+let roomCode    = null;
+let playerId    = getOrCreatePlayerId();
+let playerName  = '';
+let db          = null;
+let sessionRef  = null;
+let currentItem = 0;
+let myAnswers   = {};
+let allPlayers  = {};
+let speaking    = false;
+let currentAudio = null;
+let prevSettingsFrom = 'landing';
+let navTimer    = null;
+
+function getOrCreatePlayerId() {
+  let id = localStorage.getItem(PLAYER_ID_KEY);
+  if (!id) {
+    id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    localStorage.setItem(PLAYER_ID_KEY, id);
+  }
+  return id;
+}
+
+function getFbConfig() {
+  if (BAKED_FB_CONFIG) return BAKED_FB_CONFIG;
+  try { return JSON.parse(localStorage.getItem(FB_CFG_KEY)); } catch { return null; }
+}
+function getElKey()   { return BAKED_EL_KEY   || localStorage.getItem(EL_KEY_KEY)   || ''; }
+function getElVoice() { return BAKED_EL_VOICE || localStorage.getItem(EL_VOICE_KEY) || '21m00Tcm4TlvDq8ikWAM'; }
+
+function genRoomCode() {
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  return Array.from({length: 5}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+}
+
+function showToast(msg, ms = 1800) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), ms);
+}
+
+function copyRoomCode() {
+  if (!roomCode) return;
+  const shareUrl = buildJoinUrl(roomCode);
+  navigator.clipboard?.writeText(shareUrl).then(() => showToast('Join link copied!'))
+    .catch(() => {
+      navigator.clipboard?.writeText(roomCode).then(() => showToast('Room code copied!'));
+    });
+}
+
+function buildJoinUrl(code) {
+  const url = new URL(window.location.href);
+  url.searchParams.set('join', code);
+  return url.toString();
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+  document.getElementById('game-view').classList.add('hidden');
+  if (id !== 'game') {
+    const el = document.getElementById('screen-' + id);
+    if (el) el.classList.remove('hidden');
+  } else {
+    document.getElementById('game-view').classList.remove('hidden');
+  }
+}
+
+function showSettings(fromGame) {
+  prevSettingsFrom = fromGame ? 'game' : document.querySelector('.screen:not(.hidden)')?.id?.replace('screen-', '') || 'landing';
+  const cfg = getFbConfig();
+  document.getElementById('firebase-config-input').value = cfg ? JSON.stringify(cfg, null, 2) : '';
+  document.getElementById('el-key-input').value = getElKey();
+  document.getElementById('el-voice-select').value = getElVoice();
+  showScreen('settings');
+}
+
+function saveSettings() {
+  const cfgText  = document.getElementById('firebase-config-input').value.trim();
+  const elKey    = document.getElementById('el-key-input').value.trim();
+  const elVoice  = document.getElementById('el-voice-select').value;
+
+  let fbCfg = null;
+  if (cfgText) {
+    try {
+      fbCfg = JSON.parse(cfgText);
+      if (!fbCfg.databaseURL) {
+        alert('Firebase config must include a databaseURL.');
+        return;
+      }
+    } catch (e) {
+      alert('Invalid JSON — please paste the full Firebase config object.');
+      return;
+    }
+  }
+
+  if (fbCfg) { localStorage.setItem(FB_CFG_KEY, JSON.stringify(fbCfg)); db = null; initFirebase(); }
+  if (elKey)   localStorage.setItem(EL_KEY_KEY, elKey);
+  localStorage.setItem(EL_VOICE_KEY, elVoice);
+
+  try {
+    let html = document.documentElement.outerHTML;
+    html = html.replace(
+      /const BAKED_FB_CONFIG = .*?;/,
+      `const BAKED_FB_CONFIG = ${fbCfg ? JSON.stringify(fbCfg) : 'null'};`
+    );
+    html = html.replace(
+      /const BAKED_EL_KEY\s*= .*?;/,
+      `const BAKED_EL_KEY    = ${JSON.stringify(elKey)};`
+    );
+    html = html.replace(
+      /const BAKED_EL_VOICE\s*= .*?;/,
+      `const BAKED_EL_VOICE  = ${JSON.stringify(elVoice)};`
+    );
+    const blob = new Blob(['<!DOCTYPE html>\n' + html], { type: 'text/html' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '161_cornellian.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+    showToast('Downloaded! Replace your old file with the new one.', 3000);
+  } catch (e) {
+    showToast('Saved to session — but download failed: ' + e.message, 3000);
+  }
+
+  closeSettings();
+}
+
+function closeSettings() {
+  showScreen(prevSettingsFrom);
+}
+
+function initFirebase() {
+  if (db) return true;
+  const cfg = getFbConfig();
+  if (!cfg) return false;
+  try {
+    if (!firebase.apps.length) {
+      firebase.initializeApp(cfg);
+    } else {
+      firebase.app();
+    }
+    db = firebase.database();
+    return true;
+  } catch (e) {
+    console.error('Firebase init error:', e);
+    return false;
+  }
+}
+
+function detachListeners() {
+  if (db && roomCode) {
+    try {
+      db.ref(`sessions/${roomCode}/currentItem`).off();
+      db.ref(`sessions/${roomCode}/players`).off();
+    } catch (e) {}
+  }
+}
+
+function startSolo() {
+  mode       = 'solo';
+  myAnswers  = JSON.parse(localStorage.getItem(SOLO_KEY) || '{}');
+  currentItem = 0;
+  playerName = localStorage.getItem(NAME_KEY) || 'You';
+  setupGameUI();
+  showScreen('game');
+}
+
+function showHostSetup() {
+  if (!getFbConfig()) { prevSettingsFrom = 'host-setup'; showScreen('settings'); return; }
+  document.getElementById('host-name-input').value = localStorage.getItem(NAME_KEY) || '';
+  showScreen('host-setup');
+}
+
+async function startHost() {
+  const name = document.getElementById('host-name-input').value.trim();
+  if (!name) { showToast('Enter your name first.'); return; }
+
+  const cfg = getFbConfig();
+  if (!cfg) {
+    alert('Firebase not configured — go to Settings and paste your config first.');
+    return;
+  }
+  if (!initFirebase()) {
+    alert('Firebase failed to initialise. Check your config and that Realtime Database is enabled.');
+    return;
+  }
+
+  const btn = document.querySelector('#screen-host-setup .btn-primary');
+  const origText = btn.textContent;
+  btn.textContent = 'Creating…';
+  btn.disabled = true;
+
+  playerName = name;
+  localStorage.setItem(NAME_KEY, name);
+  mode        = 'host';
+  roomCode    = genRoomCode();
+  currentItem = 0;
+  myAnswers   = {};
+
+  sessionRef = db.ref(`sessions/${roomCode}`);
+  try {
+    await sessionRef.set({
+      currentItem: 0,
+      hostId: playerId,
+      hostName: name,
+      createdAt: firebase.database.ServerValue.TIMESTAMP
+    });
+    await db.ref(`sessions/${roomCode}/players/${playerId}`).set({
+      name,
+      joinedAt: firebase.database.ServerValue.TIMESTAMP,
+      answers: {}
+    });
+  } catch (e) {
+    btn.textContent = origText;
+    btn.disabled = false;
+    alert('Could not create room: ' + e.message + '\n\nMake sure your Realtime Database is in test mode.');
+    return;
+  }
+
+  btn.textContent = origText;
+  btn.disabled = false;
+  setupGameUI();
+  setupHostListeners();
+  showScreen('game');
+}
+
+function showJoinSetup() {
+  if (!getFbConfig()) { prevSettingsFrom = 'join-setup'; showScreen('settings'); return; }
+  document.getElementById('join-name-input').value = localStorage.getItem(NAME_KEY) || '';
+  showScreen('join-setup');
+}
+
+async function startJoin() {
+  const code = document.getElementById('join-code-input').value.trim().toUpperCase();
+  const name = document.getElementById('join-name-input').value.trim();
+  if (!code) { showToast('Enter a room code.'); return; }
+  if (!name) { showToast('Enter your name.'); return; }
+  if (!initFirebase()) { alert('Firebase not configured. Go to Settings.'); return; }
+
+  try {
+    const snap = await db.ref(`sessions/${code}`).once('value');
+    if (!snap.exists()) { showToast(`Room "${code}" not found.`); return; }
+
+    roomCode    = code;
+    mode        = 'join';
+    playerName  = name;
+    myAnswers   = {};
+    currentItem = snap.val().currentItem || 0;
+    localStorage.setItem(NAME_KEY, name);
+
+    sessionRef  = db.ref(`sessions/${roomCode}`);
+    await db.ref(`sessions/${roomCode}/players/${playerId}`).set({
+      name,
+      joinedAt: firebase.database.ServerValue.TIMESTAMP,
+      answers: {}
+    });
+
+    setupGameUI();
+    setupJoinListeners();
+    showScreen('game');
+  } catch (e) {
+    alert('Could not join: ' + e.message);
+  }
+}
+
+function setupHostListeners() {
+  db.ref(`sessions/${roomCode}/players`).on('value', snap => {
+    allPlayers = snap.val() || {};
+    renderScoreboard();
+  });
+}
+
+function setupJoinListeners() {
+  db.ref(`sessions/${roomCode}/currentItem`).on('value', snap => {
+    const val = snap.val();
+    if (val !== null && val !== currentItem) {
+      currentItem = val;
+      stopAudio();
+      renderCard();
+    }
+  });
+  db.ref(`sessions/${roomCode}/players`).on('value', snap => {
+    allPlayers = snap.val() || {};
+    renderScoreboard();
+    renderProgress();
+  });
+}
+
+function navigate(dir) {
+  if (mode === 'join') return;
+  stopAudio();
+  currentItem = (currentItem + dir + 161) % 161;
+  renderCard();
+  if (mode === 'host') syncCurrentItem();
+}
+
+function goRandom() {
+  if (mode === 'join') return;
+  stopAudio();
+  let r;
+  do { r = Math.floor(Math.random() * 161); } while (r === currentItem && 161 > 1);
+  currentItem = r;
+  renderCard();
+  if (mode === 'host') syncCurrentItem();
+}
+
+function syncCurrentItem() {
+  clearTimeout(navTimer);
+  navTimer = setTimeout(() => {
+    db.ref(`sessions/${roomCode}/currentItem`).set(currentItem);
+  }, 250);
+}
+
+function setAnswer(val) {
+  if (myAnswers[currentItem] === val) {
+    delete myAnswers[currentItem];
+  } else {
+    myAnswers[currentItem] = val;
+  }
+
+  if (mode === 'solo') {
+    localStorage.setItem(SOLO_KEY, JSON.stringify(myAnswers));
+    renderCard();
+    renderProgress();
+  } else {
+    const ref = db.ref(`sessions/${roomCode}/players/${playerId}/answers/${currentItem}`);
+    if (myAnswers[currentItem]) {
+      ref.set(myAnswers[currentItem]);
+    } else {
+      ref.remove();
+    }
+    renderCard();
+    renderProgress();
+  }
+}
+
+function resetAll() {
+  if (!confirm('Reset all your answers?')) return;
+  myAnswers = {};
+  if (mode === 'solo') {
+    localStorage.setItem(SOLO_KEY, JSON.stringify(myAnswers));
+  } else {
+    db.ref(`sessions/${roomCode}/players/${playerId}/answers`).remove();
+  }
+  renderCard();
+  renderProgress();
+}
+
+function stopAudio() {
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  speaking = false;
+  const btn = document.getElementById('btn-play');
+  if (btn) { btn.className = 'btn-play'; btn.innerHTML = '▶'; }
+  const st = document.getElementById('tts-status');
+  if (st) st.textContent = '';
+}
+
+function toggleSpeak() {
+  if (speaking) { stopAudio(); return; }
+  const key = getElKey();
+  const text = `Number ${currentItem + 1}. ${ITEMS[currentItem]}`;
+  if (key) {
+    speakElevenLabs(text, key);
+  } else {
+    speakDevice(text);
+  }
+}
+
+async function speakElevenLabs(text, key) {
+  const voiceId = getElVoice();
+  const btn = document.getElementById('btn-play');
+  const st  = document.getElementById('tts-status');
+  btn.className = 'btn-play speaking';
+  btn.innerHTML = '⏸';
+  st.textContent = 'Loading…';
+  speaking = true;
+
+  try {
+    const resp = await fetch(`<https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`>, {
+      method: 'POST',
+      headers: {
+        'xi-api-key': key,
+        'Content-Type': 'application/json',
+        'Accept': 'audio/mpeg'
+      },
+      body: JSON.stringify({
+        text,
+        model_id: 'eleven_turbo_v2_5',
+        voice_settings: { stability: 0.45, similarity_boost: 0.8, style: 0.1, use_speaker_boost: true }
+      })
+    });
+
+    if (!resp.ok) {
+      let msg = `API error ${resp.status}`;
+      try { const j = await resp.json(); msg = j.detail?.message || msg; } catch {}
+      throw new Error(msg);
+    }
+
+    const blob = await resp.blob();
+    const url  = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    audio.playbackRate = parseFloat(document.getElementById('speed').value);
+    currentAudio = audio;
+
+    audio.addEventListener('ended',  () => { URL.revokeObjectURL(url); stopAudio(); });
+    audio.addEventListener('error',  () => { URL.revokeObjectURL(url); stopAudio(); st.textContent = 'Playback error.'; });
+
+    st.textContent = '';
+    const p = audio.play();
+    if (p) p.catch(() => { stopAudio(); st.textContent = 'Blocked — tap again.'; });
+
+  } catch (e) {
+    stopAudio();
+    st.textContent = String(e.message).slice(0, 60);
+  }
+}
+
+function speakDevice(text) {
+  if (!window.speechSynthesis) return;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate  = parseFloat(document.getElementById('speed').value);
+  utter.lang  = 'en-US';
+  utter.onend = utter.onerror = stopAudio;
+  speechSynthesis.speak(utter);
+  speaking = true;
+  const btn = document.getElementById('btn-play');
+  btn.className = 'btn-play speaking';
+  btn.innerHTML = '⏸';
+  document.getElementById('tts-status').textContent = getElKey() ? '' : '(device voice — add ElevenLabs key in Settings for better quality)';
+}
+
+function renderCard() {
+  const ans = myAnswers[currentItem];
+  document.getElementById('card').className =
+    'card' + (ans === 'yes' ? ' answered-yes' : ans === 'no' ? ' answered-no' : '');
+  document.getElementById('item-num').textContent = `Item ${currentItem + 1} of 161`;
+  document.getElementById('item-text').textContent = ITEMS[currentItem];
+  document.getElementById('answer-badge').textContent = ans === 'yes' ? '✓' : ans === 'no' ? '✗' : '';
+  document.getElementById('btn-yes').className = 'btn-yes' + (ans === 'yes' ? ' active' : '');
+  document.getElementById('btn-no').className  = 'btn-no'  + (ans === 'no'  ? ' active' : '');
+
+  document.querySelectorAll('.index-item').forEach((el, i) => {
+    const a = myAnswers[i];
+    el.className = 'index-item'
+      + (i === currentItem ? ' active' : '')
+      + (a === 'yes' ? ' ans-yes' : a === 'no' ? ' ans-no' : '');
+    el.querySelector('.idx-badge').textContent = a === 'yes' ? '✓' : a === 'no' ? '✗' : '';
+  });
+  const active = document.querySelector('.index-item.active');
+  if (active) active.scrollIntoView({ block: 'nearest' });
+}
+
+function renderProgress() {
+  let yesCount, noCount;
+  if (mode !== 'solo' && Object.keys(allPlayers).length > 0) {
+    yesCount = 0; noCount = 0;
+    Object.values(allPlayers).forEach(p => {
+      Object.values(p.answers || {}).forEach(a => {
+        if (a === 'yes') yesCount++;
+        else if (a === 'no') noCount++;
+      });
+    });
+  } else {
+    yesCount = Object.values(myAnswers).filter(v => v === 'yes').length;
+    noCount  = Object.values(myAnswers).filter(v => v === 'no').length;
+  }
+  const total = yesCount + noCount;
+  document.getElementById('prog-text').textContent = `${total} answered`;
+  document.getElementById('yes-count').textContent = `${yesCount} yes`;
+  document.getElementById('no-count').textContent  = `${noCount} no`;
+  document.getElementById('prog-yes').style.width = (yesCount / 161 * 100) + '%';
+  document.getElementById('prog-no').style.width  = (noCount  / 161 * 100) + '%';
+}
+
+function renderScoreboard() {
+  if (mode === 'solo') return;
+  const players = Object.entries(allPlayers);
+  const q = currentItem;
+
+  let yes = 0, no = 0;
+  players.forEach(([, p]) => {
+    const a = (p.answers || {})[q];
+    if (a === 'yes') yes++; else if (a === 'no') no++;
+  });
+  const total = yes + no;
+  const pct = total > 0 ? Math.round(yes / total * 100) : 0;
+
+  document.getElementById('score-summary').innerHTML = `
+    <div class="score-q-summary">
+      Q${q + 1}: <span class="yes-count">${yes} yes</span> · <span class="no-count">${no} no</span>
+      · ${players.length - total} pending
+    </div>
+    <div class="score-bar-bg"><div class="score-bar-yes" style="width:${pct}%"></div></div>`;
+
+  document.getElementById('score-players').innerHTML = players
+    .sort((a, b) => (a[1].joinedAt || 0) - (b[1].joinedAt || 0))
+    .map(([pid, p]) => {
+      const a = (p.answers || {})[q];
+      const badge = a === 'yes' ? '<span class="sb-yes">✓ yes</span>'
+                  : a === 'no'  ? '<span class="sb-no">✗ no</span>'
+                  : '<span class="sb-pending">…</span>';
+      const me = pid === playerId ? ' <span style="opacity:.5;font-size:.7em">(you)</span>' : '';
+      return `<div class="sb-row"><span class="sb-name">${esc(p.name)}${me}</span>${badge}</div>`;
+    }).join('');
+
+  const ranked = players
+    .map(([, p]) => {
+      const ans = Object.values(p.answers || {});
+      return { name: p.name, yes: ans.filter(a => a === 'yes').length, total: ans.length };
+    })
+    .sort((a, b) => b.yes - a.yes || b.total - a.total);
+
+  document.getElementById('score-overall').innerHTML = ranked.length
+    ? ranked.map((p, i) =>
+        `<div class="sb-overall-row">
+          <span class="sb-rank">${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i+1}.`}</span>
+          <span class="sb-name">${esc(p.name)}</span>
+          <span><span class="yes-count">${p.yes}✓</span> / ${p.total} answered</span>
+        </div>`).join('')
+    : '<div style="color:#4a3020;font-size:.74rem">No answers yet</div>';
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function setupGameUI() {
+  const badge = document.getElementById('mode-badge');
+  badge.textContent = mode === 'solo' ? 'SOLO' : mode === 'host' ? 'HOST' : 'GUEST';
+  badge.className = `mode-badge mode-${mode}`;
+
+  const rcBadge   = document.getElementById('room-code-badge');
+  const shareHint = document.getElementById('share-hint');
+  if (mode !== 'solo' && roomCode) {
+    rcBadge.textContent = roomCode;
+    rcBadge.style.display = '';
+    shareHint.style.display = mode === 'host' ? '' : 'none';
+    shareHint.textContent = 'tap code to copy join link';
+  } else {
+    rcBadge.style.display   = 'none';
+    shareHint.style.display = 'none';
+  }
+
+  const disable = mode === 'join';
+  ['btn-prev','btn-next','btn-random'].forEach(id => {
+    document.getElementById(id).disabled = disable;
+  });
+
+  document.getElementById('btn-play').style.display  = disable ? 'none' : '';
+  document.getElementById('tts-row').style.display   = disable ? 'none' : '';
+  document.getElementById('scoreboard').style.display = mode === 'solo' ? 'none' : '';
+  document.getElementById('reset-row').style.display  = mode === 'solo' ? '' : 'none';
+
+  buildIndexList();
+  renderCard();
+  renderProgress();
+  if (mode !== 'solo') renderScoreboard();
+}
+
+function buildIndexList() {
+  const list = document.getElementById('index-list');
+  list.innerHTML = '';
+  ITEMS.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'index-item';
+    div.innerHTML = `<span class="idx-num">${i+1}.</span><span style="flex:1">${esc(item)}</span><span class="idx-badge"></span>`;
+    div.addEventListener('click', () => {
+      if (mode === 'join') return;
+      stopAudio();
+      currentItem = i;
+      renderCard();
+      if (mode === 'host') syncCurrentItem();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    list.appendChild(div);
+  });
+}
+
+function leaveGame() {
+  stopAudio();
+  detachListeners();
+  if (mode === 'join' && db && roomCode) {
+    db.ref(`sessions/${roomCode}/players/${playerId}`).remove().catch(() => {});
+  }
+  mode = 'solo'; roomCode = null; sessionRef = null; allPlayers = {};
+  showScreen('landing');
+}
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('game-view').classList.contains('hidden')) {
+    if (e.key === 'ArrowLeft')  navigate(-1);
+    else if (e.key === 'ArrowRight') navigate(1);
+    else if (e.key === ' ')  { e.preventDefault(); toggleSpeak(); }
+    else if (e.key === 'y' || e.key === 'Y') setAnswer('yes');
+    else if (e.key === 'n' || e.key === 'N') setAnswer('no');
+    else if (e.key === 'r' || e.key === 'R') goRandom();
+  }
+});
+
+const speedSlider = document.getElementById('speed');
+const speedLabel  = document.getElementById('speed-label');
+speedSlider.addEventListener('input', () => {
+  speedLabel.textContent = parseFloat(speedSlider.value).toFixed(1) + '×';
+  if (currentAudio) currentAudio.playbackRate = parseFloat(speedSlider.value);
+});
+
+(function init() {
+  initFirebase();
+  const params   = new URLSearchParams(window.location.search);
+  const joinCode = params.get('join');
+  if (joinCode) {
+    document.getElementById('join-code-input').value = joinCode.toUpperCase();
+    if (!getFbConfig()) {
+      prevSettingsFrom = 'join-setup';
+      showScreen('settings');
+    } else {
+      showScreen('join-setup');
+    }
+  } else {
+    showScreen('landing');
+  }
+})();
+</script>
+</body>
+</html>
