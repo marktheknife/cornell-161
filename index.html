@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>161 Things Every Cornellian Should Do</title>
-<script src="<https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js>"></script>
-<script src="<https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js>"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -19,6 +19,7 @@ body {
   align-items: center;
 }
 
+/* ── SCREENS ──────────────────────────────────────────── */
 .screen {
   position: fixed; inset: 0;
   background: #1a0a00;
@@ -28,7 +29,10 @@ body {
   z-index: 100; overflow-y: auto;
 }
 .screen.hidden { display: none !important; }
-.screen-logo { font-size: 2.4rem; margin-bottom: 14px; opacity: 0.7; }
+
+.screen-logo {
+  font-size: 2.4rem; margin-bottom: 14px; opacity: 0.7;
+}
 .screen h1 {
   font-size: clamp(1.1rem, 5vw, 1.7rem);
   color: #e8c06a; text-align: center;
@@ -45,10 +49,12 @@ body {
   font-style: italic; text-align: center;
   margin-bottom: 28px;
 }
+
 .screen-buttons {
   display: flex; flex-direction: column;
   gap: 12px; width: 100%; max-width: 320px; margin-bottom: 20px;
 }
+
 .btn-mode {
   padding: 15px 24px; font-size: 0.95rem;
   font-family: Georgia, serif; border-radius: 12px;
@@ -62,18 +68,21 @@ body {
 .btn-mode.btn-host:hover { background: #1a2a10; }
 .btn-mode.btn-join { border-color: #3a3080; color: #a0a0ff; }
 .btn-mode.btn-join:hover { background: #1a1a30; }
+
 .btn-small-link {
   background: none; border: none; color: #605040;
   font-size: 0.8rem; cursor: pointer; padding: 8px;
   font-family: Georgia, serif;
 }
 .btn-small-link:hover { color: #e8c06a; }
+
 .btn-back {
   background: none; border: none; color: #806050;
   font-size: 0.85rem; cursor: pointer; padding: 10px;
   font-family: Georgia, serif; margin-top: 4px;
 }
 .btn-back:hover { color: #e8c06a; }
+
 .btn-primary {
   padding: 14px 24px; font-size: 0.95rem;
   font-family: Georgia, serif; border-radius: 12px;
@@ -83,6 +92,7 @@ body {
 }
 .btn-primary:hover { background: #9a1010; }
 .btn-primary:active { transform: scale(0.97); }
+
 .input-group {
   display: flex; flex-direction: column; gap: 6px;
   width: 100%; max-width: 360px; margin-bottom: 14px;
@@ -102,24 +112,28 @@ body {
 .input-group input:focus,
 .input-group textarea:focus { border-color: #b31b1b; }
 .input-group select option { background: #2a1005; }
+
 .form-hint {
   font-size: 0.68rem; color: #7a5040;
   font-style: italic; line-height: 1.4;
 }
 a.form-hint-link { color: #a08060; }
 
+/* ── GAME VIEW ────────────────────────────────────────── */
 #game-view {
   width: 100%; max-width: 580px;
   display: flex; flex-direction: column;
   align-items: center; padding: 14px 18px 30px;
 }
 #game-view.hidden { display: none !important; }
+
 .game-header {
   width: 100%; display: flex;
   justify-content: space-between; align-items: center;
   margin-bottom: 12px;
 }
 .header-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
 .mode-badge {
   font-size: 0.62rem; font-weight: bold;
   letter-spacing: 0.12em; padding: 3px 9px;
@@ -128,16 +142,20 @@ a.form-hint-link { color: #a08060; }
 .mode-solo { background: #3a2010; color: #a08060; }
 .mode-host { background: #1a3010; color: #6adf50; border: 1px solid #3a6020; }
 .mode-join { background: #1a1a30; color: #a0a0ff; border: 1px solid #3a3080; }
+
 .room-code-badge {
   font-size: 0.82rem; font-weight: bold;
   letter-spacing: 0.2em; color: #e8c06a;
   background: #2a1500; padding: 3px 10px;
   border-radius: 6px; cursor: pointer;
   border: 1px solid #5a3010;
-  user-select: all; position: relative;
+  user-select: all;
+  position: relative;
 }
 .room-code-badge:hover { border-color: #e8c06a; }
+
 .share-hint { font-size: 0.65rem; color: #7a5030; font-style: italic; }
+
 .btn-icon {
   background: none; border: none; color: #605040;
   font-size: 1rem; cursor: pointer; padding: 4px 8px;
@@ -145,6 +163,7 @@ a.form-hint-link { color: #a08060; }
 }
 .btn-icon:hover { color: #f5f0e8; background: #3a1505; }
 
+/* ── PROGRESS ─────────────────────────────────────────── */
 .progress-wrap { width: 100%; margin-bottom: 14px; }
 .progress-label {
   display: flex; justify-content: space-between;
@@ -165,6 +184,7 @@ a.form-hint-link { color: #a08060; }
   height: 100%; transition: width 0.4s ease;
 }
 
+/* ── CARD ─────────────────────────────────────────────── */
 .card {
   background: #2a100a; border: 2px solid #5a2010;
   border-radius: 16px; width: 100%;
@@ -175,6 +195,7 @@ a.form-hint-link { color: #a08060; }
 }
 .card.answered-yes { background: #1a2a10; border-color: #3a7020; }
 .card.answered-no  { background: #2a1010; border-color: #7a2010; }
+
 .item-number {
   font-size: 0.72rem; color: #a08060;
   letter-spacing: 0.1em; margin-bottom: 12px;
@@ -186,6 +207,7 @@ a.form-hint-link { color: #a08060; }
 }
 .card.answered-yes .item-text { color: #c8e8a0; }
 .card.answered-no  .item-text { color: #e8b0a0; }
+
 .answer-badge {
   position: absolute; top: 14px; right: 16px;
   font-size: 1.2rem; opacity: 0; transition: opacity 0.3s;
@@ -193,6 +215,7 @@ a.form-hint-link { color: #a08060; }
 .card.answered-yes .answer-badge,
 .card.answered-no  .answer-badge { opacity: 1; }
 
+/* ── NAV CONTROLS ─────────────────────────────────────── */
 .controls {
   display: flex; align-items: center; gap: 10px;
   margin-top: 16px; flex-wrap: wrap; justify-content: center;
@@ -221,6 +244,7 @@ a.form-hint-link { color: #a08060; }
 .btn-random:hover:not(:disabled) { background: #3a2050; }
 .btn-random:disabled { opacity: 0.25; cursor: default; }
 
+/* ── YES / NO ─────────────────────────────────────────── */
 .yn-row { display: flex; gap: 12px; margin-top: 14px; width: 100%; }
 .btn-yes {
   flex: 1; padding: 13px 0; font-size: 0.95rem; font-weight: bold;
@@ -239,6 +263,7 @@ a.form-hint-link { color: #a08060; }
 .btn-no:hover { background: #401818; border-color: #df6040; }
 .btn-no.active { background: #501818; border-color: #df6040; box-shadow: 0 0 10px rgba(223,96,64,0.3); color: #ff9070; }
 
+/* ── SETTINGS ROW ─────────────────────────────────────── */
 .settings-row {
   display: flex; align-items: center; gap: 10px;
   margin-top: 10px; font-size: 0.72rem; color: #806050;
@@ -247,6 +272,7 @@ a.form-hint-link { color: #a08060; }
 .settings-row input[type=range] { accent-color: #b31b1b; width: 90px; }
 #tts-status { font-size: 0.67rem; color: #7a5040; font-style: italic; }
 
+/* ── SCOREBOARD ───────────────────────────────────────── */
 .scoreboard {
   width: 100%; margin-top: 18px;
   background: #150800; border: 1px solid #3a1505;
@@ -257,7 +283,9 @@ a.form-hint-link { color: #a08060; }
   letter-spacing: 0.1em; color: #806050;
   margin-bottom: 10px; font-weight: bold;
 }
-.score-q-summary { font-size: 0.78rem; color: #c0a080; margin-bottom: 6px; }
+.score-q-summary {
+  font-size: 0.78rem; color: #c0a080; margin-bottom: 6px;
+}
 .score-bar-bg {
   height: 6px; background: #3a1a00;
   border-radius: 99px; overflow: hidden; margin-bottom: 12px;
@@ -268,7 +296,8 @@ a.form-hint-link { color: #a08060; }
 }
 .sb-row {
   display: flex; justify-content: space-between; align-items: center;
-  padding: 5px 0; border-bottom: 1px solid #220d00; font-size: 0.78rem;
+  padding: 5px 0; border-bottom: 1px solid #220d00;
+  font-size: 0.78rem;
 }
 .sb-row:last-child { border-bottom: none; }
 .sb-name { color: #c0a080; }
@@ -282,6 +311,7 @@ a.form-hint-link { color: #a08060; }
 .sb-overall-row:last-child { border-bottom: none; }
 .sb-rank { color: #e8c06a; min-width: 20px; }
 
+/* ── BOTTOM ROW ───────────────────────────────────────── */
 .bottom-row {
   display: flex; gap: 10px; margin-top: 12px;
   justify-content: center; flex-wrap: wrap; width: 100%;
@@ -293,6 +323,7 @@ a.form-hint-link { color: #a08060; }
 }
 .btn-reset:hover { background: #301520; color: #ff9090; }
 
+/* ── INDEX ────────────────────────────────────────────── */
 details { width: 100%; margin-top: 16px; }
 summary {
   cursor: pointer; font-size: 0.72rem; color: #806050;
@@ -318,6 +349,7 @@ summary:hover { color: #e8c06a; }
 .idx-num { color: #605040; min-width: 26px; text-align: right; flex-shrink: 0; }
 .idx-badge { flex-shrink: 0; font-size: 0.82rem; min-width: 16px; }
 
+/* ── TOAST ────────────────────────────────────────────── */
 .toast {
   position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
   background: #3a2010; border: 1px solid #7a4020; color: #e8c06a;
@@ -327,7 +359,9 @@ summary:hover { color: #e8c06a; }
 }
 .toast.show { opacity: 1; }
 
-footer { margin-top: 22px; font-size: 0.63rem; color: #4a3020; text-align: center; }
+footer {
+  margin-top: 22px; font-size: 0.63rem; color: #4a3020; text-align: center;
+}
 
 details[data-sb] summary {
   font-size: 0.7rem; color: #605040; text-align: left;
@@ -337,6 +371,7 @@ details[data-sb] summary {
 </head>
 <body>
 
+<!-- ══ LANDING ══════════════════════════════════════════ -->
 <div id="screen-landing" class="screen">
   <div class="screen-logo">🏛</div>
   <h1>161 Things Every<br>Cornellian Should Do</h1>
@@ -349,6 +384,7 @@ details[data-sb] summary {
   <button class="btn-small-link" onclick="showSettings(false)">⚙ Settings</button>
 </div>
 
+<!-- ══ HOST SETUP ════════════════════════════════════════ -->
 <div id="screen-host-setup" class="screen hidden">
   <h2>Host a Game</h2>
   <p class="screen-sub">You control the questions. Others follow along.</p>
@@ -360,6 +396,7 @@ details[data-sb] summary {
   <button class="btn-back" onclick="showScreen('landing')">← Back</button>
 </div>
 
+<!-- ══ JOIN SETUP ════════════════════════════════════════ -->
 <div id="screen-join-setup" class="screen hidden">
   <h2>Join a Game</h2>
   <p class="screen-sub">Enter the room code from the host's screen.</p>
@@ -378,18 +415,29 @@ details[data-sb] summary {
   <button class="btn-back" onclick="showScreen('landing')">← Back</button>
 </div>
 
+<!-- ══ SETTINGS ══════════════════════════════════════════ -->
 <div id="screen-settings" class="screen hidden">
   <h2>Settings</h2>
-  <p class="screen-sub">Saving downloads a new copy of the file with your config baked in.</p>
+  <p class="screen-sub">Saving downloads a new copy of the file with your config baked in — replace your old file with it.</p>
+
   <div class="input-group">
     <label>Firebase Config JSON</label>
     <textarea id="firebase-config-input" rows="5"
       placeholder='{"apiKey":"…","authDomain":"…","databaseURL":"…","projectId":"…","appId":"…"}'></textarea>
+    <span class="form-hint">
+      Free at <a class="form-hint-link" href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a>.
+      Create project → Realtime Database → Start in test mode → copy config.
+    </span>
   </div>
+
   <div class="input-group">
     <label>ElevenLabs API Key (natural TTS)</label>
     <input id="el-key-input" type="password" placeholder="sk_…" autocomplete="off">
+    <span class="form-hint">
+      Free at <a class="form-hint-link" href="https://elevenlabs.io" target="_blank">elevenlabs.io</a> (10k chars/month, no card needed).
+    </span>
   </div>
+
   <div class="input-group">
     <label>ElevenLabs Voice</label>
     <select id="el-voice-select">
@@ -403,11 +451,14 @@ details[data-sb] summary {
       <option value="Xb7hH8MSUJpSbSDYk0k2">Alice — British female</option>
     </select>
   </div>
+
   <button class="btn-primary" onclick="saveSettings()">Save</button>
   <button class="btn-back" onclick="closeSettings()">← Back</button>
 </div>
 
+<!-- ══ GAME VIEW ══════════════════════════════════════════ -->
 <div id="game-view" class="hidden">
+
   <div class="game-header">
     <div class="header-left">
       <span id="mode-badge" class="mode-badge mode-solo">SOLO</span>
@@ -457,6 +508,7 @@ details[data-sb] summary {
     <span id="tts-status"></span>
   </div>
 
+  <!-- SCOREBOARD (multiplayer only) -->
   <div id="scoreboard" class="scoreboard" style="display:none">
     <div class="sb-title">📊 Live Scoreboard</div>
     <div id="score-summary"></div>
@@ -479,9 +531,13 @@ details[data-sb] summary {
   <footer>The Cornell Daily Sun &bull; Answers saved locally</footer>
 </div>
 
+<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
+// ══════════════════════════════════════════════════════════
+// ITEMS
+// ══════════════════════════════════════════════════════════
 const ITEMS = [
   "Make the library into your bedroom and have sex in the stacks",
   "Go to the Cornell-Harvard men's hockey game and throw fish on the ice",
@@ -646,10 +702,16 @@ const ITEMS = [
   "Climb all 161 steps to the top of McGraw Tower"
 ];
 
-const BAKED_FB_CONFIG = {"apiKey":"AIzaSyB6Z85th8tcoJKZKKWpLhihIURl6Pl0M_w","authDomain":"<cornell-161-things.firebaseapp.com>","databaseURL":"<https://cornell-161-things-default-rtdb.firebaseio.com>","projectId":"cornell-161-things","storageBucket":"cornell-161-things.firebasestorage.app","messagingSenderId":"849154233670","appId":"1:849154233670:web:3c6a5de31c7ecda5680147"};
+// ══════════════════════════════════════════════════════════
+// BAKED CONFIG — replaced automatically when you save Settings
+// ══════════════════════════════════════════════════════════
+const BAKED_FB_CONFIG = {"apiKey":"AIzaSyB6Z85th8tcoJKZKKWpLhihIURl6Pl0M_w","authDomain":"cornell-161-things.firebaseapp.com","databaseURL":"https://cornell-161-things-default-rtdb.firebaseio.com","projectId":"cornell-161-things","storageBucket":"cornell-161-things.firebasestorage.app","messagingSenderId":"849154233670","appId":"1:849154233670:web:3c6a5de31c7ecda5680147"};
 const BAKED_EL_KEY    = 'sk_da10040db681bdb44dc412b9de8a626d12eb96ba6aecec0f';
 const BAKED_EL_VOICE  = '';
 
+// ══════════════════════════════════════════════════════════
+// CONSTANTS & STATE
+// ══════════════════════════════════════════════════════════
 const SOLO_KEY      = 'cornell161_solo_v3';
 const PLAYER_ID_KEY = 'cornell161_pid';
 const NAME_KEY      = 'cornell161_name';
@@ -657,20 +719,23 @@ const FB_CFG_KEY    = 'cornell161_fbCfg';
 const EL_KEY_KEY    = 'cornell161_elKey';
 const EL_VOICE_KEY  = 'cornell161_elVoice';
 
-let mode        = 'solo';
+let mode        = 'solo';   // 'solo' | 'host' | 'join'
 let roomCode    = null;
 let playerId    = getOrCreatePlayerId();
 let playerName  = '';
 let db          = null;
 let sessionRef  = null;
 let currentItem = 0;
-let myAnswers   = {};
-let allPlayers  = {};
+let myAnswers   = {};       // this player's answers { index: 'yes'|'no' }
+let allPlayers  = {};       // Firebase snapshot { pid: {name, answers} }
 let speaking    = false;
 let currentAudio = null;
-let prevSettingsFrom = 'landing';
+let prevSettingsFrom = 'landing'; // where to return after settings
 let navTimer    = null;
 
+// ══════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════
 function getOrCreatePlayerId() {
   let id = localStorage.getItem(PLAYER_ID_KEY);
   if (!id) {
@@ -704,6 +769,7 @@ function copyRoomCode() {
   const shareUrl = buildJoinUrl(roomCode);
   navigator.clipboard?.writeText(shareUrl).then(() => showToast('Join link copied!'))
     .catch(() => {
+      // Fallback: try just the code
       navigator.clipboard?.writeText(roomCode).then(() => showToast('Room code copied!'));
     });
 }
@@ -714,6 +780,9 @@ function buildJoinUrl(code) {
   return url.toString();
 }
 
+// ══════════════════════════════════════════════════════════
+// SCREEN MANAGEMENT
+// ══════════════════════════════════════════════════════════
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
   document.getElementById('game-view').classList.add('hidden');
@@ -744,19 +813,22 @@ function saveSettings() {
     try {
       fbCfg = JSON.parse(cfgText);
       if (!fbCfg.databaseURL) {
-        alert('Firebase config must include a databaseURL.');
+        alert('Firebase config must include a databaseURL.\nMake sure you enabled Realtime Database first.');
         return;
       }
     } catch (e) {
-      alert('Invalid JSON — please paste the full Firebase config object.');
+      alert('Invalid JSON — please paste the full Firebase config object (the { } block only).');
       return;
     }
   }
 
+  // Also save to localStorage for the current session
   if (fbCfg) { localStorage.setItem(FB_CFG_KEY, JSON.stringify(fbCfg)); db = null; initFirebase(); }
   if (elKey)   localStorage.setItem(EL_KEY_KEY, elKey);
   localStorage.setItem(EL_VOICE_KEY, elVoice);
 
+  // Bake values into a new copy of the HTML file and download it.
+  // This is the permanent fix — replace your file with the download.
   try {
     let html = document.documentElement.outerHTML;
     html = html.replace(
@@ -791,6 +863,9 @@ function closeSettings() {
   showScreen(prevSettingsFrom);
 }
 
+// ══════════════════════════════════════════════════════════
+// FIREBASE
+// ══════════════════════════════════════════════════════════
 function initFirebase() {
   if (db) return true;
   const cfg = getFbConfig();
@@ -799,7 +874,7 @@ function initFirebase() {
     if (!firebase.apps.length) {
       firebase.initializeApp(cfg);
     } else {
-      firebase.app();
+      firebase.app(); // reuse
     }
     db = firebase.database();
     return true;
@@ -818,6 +893,9 @@ function detachListeners() {
   }
 }
 
+// ══════════════════════════════════════════════════════════
+// SOLO MODE
+// ══════════════════════════════════════════════════════════
 function startSolo() {
   mode       = 'solo';
   myAnswers  = JSON.parse(localStorage.getItem(SOLO_KEY) || '{}');
@@ -827,6 +905,9 @@ function startSolo() {
   showScreen('game');
 }
 
+// ══════════════════════════════════════════════════════════
+// HOST MODE
+// ══════════════════════════════════════════════════════════
 function showHostSetup() {
   if (!getFbConfig()) { prevSettingsFrom = 'host-setup'; showScreen('settings'); return; }
   document.getElementById('host-name-input').value = localStorage.getItem(NAME_KEY) || '';
@@ -839,11 +920,11 @@ async function startHost() {
 
   const cfg = getFbConfig();
   if (!cfg) {
-    alert('Firebase not configured — go to Settings and paste your config first.');
+    alert('Firebase not configured — go to Settings (⚙) and paste your config first.');
     return;
   }
   if (!initFirebase()) {
-    alert('Firebase failed to initialise. Check your config and that Realtime Database is enabled.');
+    alert('Firebase failed to initialise. Check that your config JSON is correct and that Realtime Database is enabled in your project.');
     return;
   }
 
@@ -875,7 +956,7 @@ async function startHost() {
   } catch (e) {
     btn.textContent = origText;
     btn.disabled = false;
-    alert('Could not create room: ' + e.message + '\n\nMake sure your Realtime Database is in test mode.');
+    alert('Could not create room: ' + e.message + '\n\nMake sure your Realtime Database was started in "test mode" (open security rules).');
     return;
   }
 
@@ -886,6 +967,9 @@ async function startHost() {
   showScreen('game');
 }
 
+// ══════════════════════════════════════════════════════════
+// JOIN MODE
+// ══════════════════════════════════════════════════════════
 function showJoinSetup() {
   if (!getFbConfig()) { prevSettingsFrom = 'join-setup'; showScreen('settings'); return; }
   document.getElementById('join-name-input').value = localStorage.getItem(NAME_KEY) || '';
@@ -925,6 +1009,9 @@ async function startJoin() {
   }
 }
 
+// ══════════════════════════════════════════════════════════
+// FIREBASE LISTENERS
+// ══════════════════════════════════════════════════════════
 function setupHostListeners() {
   db.ref(`sessions/${roomCode}/players`).on('value', snap => {
     allPlayers = snap.val() || {};
@@ -948,6 +1035,9 @@ function setupJoinListeners() {
   });
 }
 
+// ══════════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════════
 function navigate(dir) {
   if (mode === 'join') return;
   stopAudio();
@@ -973,6 +1063,9 @@ function syncCurrentItem() {
   }, 250);
 }
 
+// ══════════════════════════════════════════════════════════
+// ANSWERS
+// ══════════════════════════════════════════════════════════
 function setAnswer(val) {
   if (myAnswers[currentItem] === val) {
     delete myAnswers[currentItem];
@@ -1008,6 +1101,9 @@ function resetAll() {
   renderProgress();
 }
 
+// ══════════════════════════════════════════════════════════
+// TTS
+// ══════════════════════════════════════════════════════════
 function stopAudio() {
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   if (window.speechSynthesis) speechSynthesis.cancel();
@@ -1039,7 +1135,7 @@ async function speakElevenLabs(text, key) {
   speaking = true;
 
   try {
-    const resp = await fetch(`<https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`>, {
+    const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
       method: 'POST',
       headers: {
         'xi-api-key': key,
@@ -1092,6 +1188,9 @@ function speakDevice(text) {
   document.getElementById('tts-status').textContent = getElKey() ? '' : '(device voice — add ElevenLabs key in Settings for better quality)';
 }
 
+// ══════════════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════════════
 function renderCard() {
   const ans = myAnswers[currentItem];
   document.getElementById('card').className =
@@ -1114,8 +1213,10 @@ function renderCard() {
 }
 
 function renderProgress() {
+  // In multiplayer, show group-wide progress; in solo, show personal
   let yesCount, noCount;
   if (mode !== 'solo' && Object.keys(allPlayers).length > 0) {
+    // Aggregate across all players
     yesCount = 0; noCount = 0;
     Object.values(allPlayers).forEach(p => {
       Object.values(p.answers || {}).forEach(a => {
@@ -1155,6 +1256,7 @@ function renderScoreboard() {
     </div>
     <div class="score-bar-bg"><div class="score-bar-yes" style="width:${pct}%"></div></div>`;
 
+  // Per-player current question
   document.getElementById('score-players').innerHTML = players
     .sort((a, b) => (a[1].joinedAt || 0) - (b[1].joinedAt || 0))
     .map(([pid, p]) => {
@@ -1166,6 +1268,7 @@ function renderScoreboard() {
       return `<div class="sb-row"><span class="sb-name">${esc(p.name)}${me}</span>${badge}</div>`;
     }).join('');
 
+  // Overall leaderboard
   const ranked = players
     .map(([, p]) => {
       const ans = Object.values(p.answers || {});
@@ -1188,12 +1291,17 @@ function esc(s) {
     ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+// ══════════════════════════════════════════════════════════
+// SETUP GAME UI
+// ══════════════════════════════════════════════════════════
 function setupGameUI() {
+  // Mode badge
   const badge = document.getElementById('mode-badge');
   badge.textContent = mode === 'solo' ? 'SOLO' : mode === 'host' ? 'HOST' : 'GUEST';
   badge.className = `mode-badge mode-${mode}`;
 
-  const rcBadge   = document.getElementById('room-code-badge');
+  // Room code
+  const rcBadge  = document.getElementById('room-code-badge');
   const shareHint = document.getElementById('share-hint');
   if (mode !== 'solo' && roomCode) {
     rcBadge.textContent = roomCode;
@@ -1201,19 +1309,25 @@ function setupGameUI() {
     shareHint.style.display = mode === 'host' ? '' : 'none';
     shareHint.textContent = 'tap code to copy join link';
   } else {
-    rcBadge.style.display   = 'none';
+    rcBadge.style.display  = 'none';
     shareHint.style.display = 'none';
   }
 
+  // Nav & random: disabled for join
   const disable = mode === 'join';
   ['btn-prev','btn-next','btn-random'].forEach(id => {
     document.getElementById(id).disabled = disable;
   });
 
-  document.getElementById('btn-play').style.display  = disable ? 'none' : '';
-  document.getElementById('tts-row').style.display   = disable ? 'none' : '';
+  // Play button: hide for join
+  document.getElementById('btn-play').style.display = disable ? 'none' : '';
+  // TTS row: hide for join
+  document.getElementById('tts-row').style.display = disable ? 'none' : '';
+
+  // Scoreboard: show for multiplayer
   document.getElementById('scoreboard').style.display = mode === 'solo' ? 'none' : '';
-  document.getElementById('reset-row').style.display  = mode === 'solo' ? '' : 'none';
+  // Reset: solo only
+  document.getElementById('reset-row').style.display = mode === 'solo' ? '' : 'none';
 
   buildIndexList();
   renderCard();
@@ -1240,6 +1354,9 @@ function buildIndexList() {
   });
 }
 
+// ══════════════════════════════════════════════════════════
+// LEAVE
+// ══════════════════════════════════════════════════════════
 function leaveGame() {
   stopAudio();
   detachListeners();
@@ -1250,6 +1367,9 @@ function leaveGame() {
   showScreen('landing');
 }
 
+// ══════════════════════════════════════════════════════════
+// KEYBOARD
+// ══════════════════════════════════════════════════════════
 document.addEventListener('keydown', e => {
   if (!document.getElementById('game-view').classList.contains('hidden')) {
     if (e.key === 'ArrowLeft')  navigate(-1);
@@ -1261,6 +1381,7 @@ document.addEventListener('keydown', e => {
   }
 });
 
+// Speed slider
 const speedSlider = document.getElementById('speed');
 const speedLabel  = document.getElementById('speed-label');
 speedSlider.addEventListener('input', () => {
@@ -1268,6 +1389,9 @@ speedSlider.addEventListener('input', () => {
   if (currentAudio) currentAudio.playbackRate = parseFloat(speedSlider.value);
 });
 
+// ══════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════
 (function init() {
   initFirebase();
   const params   = new URLSearchParams(window.location.search);
